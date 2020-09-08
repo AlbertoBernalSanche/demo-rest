@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, String>{
 	
 	public List<Product> findByNameStartingWith(String word);
 	
+	//cambios
 }
