@@ -28,7 +28,7 @@ class ShoppingCartRepositoryTest {
 	
 	private static Integer carId=null;
 	
-	private static String email="abaglowbn@furl.net";
+	private static String email="abeamondqq@harvard.edu";
 	
 	private Integer payId=1;
 	

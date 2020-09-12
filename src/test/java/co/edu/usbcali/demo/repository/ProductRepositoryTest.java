@@ -23,7 +23,7 @@ import co.edu.usbcali.demo.domain.Product;
 @TestMethodOrder(OrderAnnotation.class)
 class ProductRepositoryTest {
 
-	private final static String proId = "100";
+	private final static String proId = "200";
 
 	private final static Logger log = LoggerFactory.getLogger(ProductRepositoryTest.class);
 
