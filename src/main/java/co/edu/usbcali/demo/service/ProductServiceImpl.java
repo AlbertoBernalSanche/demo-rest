@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		productRepository.findById(entity.getProId()).ifPresent(product->{
 			if(product.getShoppingProducts()!=null && product.getShoppingProducts().isEmpty()==false) {
-				throw new RuntimeException("el customer con id:"+entity.getProId()+" no se puede borrar tiene shoppingcarts");
+				throw new RuntimeException("el product con id:"+entity.getProId()+" no se puede borrar tiene shoppingProducts");
 			}
 		});
 		
@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService{
 		if(entity.getName()==null || entity.getName().isBlank()==true) {
 			throw new Exception("el name es obligatorio");
 		}
-		if(entity.getPrice()==null ) {
+		if(entity.getPrice()==null || entity.getPrice()<0) {
 			throw new Exception("el detail es obligatorio");
 		}
 		if(entity.getProId()==null || entity.getProId().isBlank()==true) {
