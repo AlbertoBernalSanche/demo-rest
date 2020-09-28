@@ -71,7 +71,11 @@ public class ShoppingCartImpl implements ShoppingCartService{
 		if (shoppingCartRepository.existsById(entity.getCarId())==false) {
 			throw new Exception("el shoppingCart con id:"+entity.getCarId()+" no existe");
 		}
-		
+		shoppingCartRepository.findById(entity.getCarId()).ifPresent(shoppingCart->{
+			if(shoppingCart.getShoppingProducts()!=null && shoppingCart.getShoppingProducts().isEmpty()==false) {
+				throw new RuntimeException("el shoppingcarts con id:"+entity.getCarId()+" no se puede borrar tiene shoppingProducts");
+			}
+		});
 		shoppingCartRepository.deleteById(entity.getCarId());
 		
 	}
