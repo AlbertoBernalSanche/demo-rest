@@ -2,6 +2,11 @@ package co.edu.usbcali.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +23,9 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Autowired
 	CustomerRepository customerRepository;
+	
+	@Autowired
+	Validator validator;
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -81,6 +89,8 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		if(customerRepository.existsById(id)) {
 			delete(customerRepository.findById(id).get());
+		}else {
+			throw new Exception("el customer con id:"+id+" no existe existe");
 		}
 		
 	}
@@ -88,32 +98,19 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<Customer> findById(String id) throws Exception {
-		// TODO Auto-generated method stub
+	
 		return customerRepository.findById(id);
 	}
 
 	@Override
 	public void validate(Customer entity) throws Exception {
-		if(entity == null) {
+		if (entity== null) {
 			throw new Exception("el customer esta vacio");
 		}
-		if(entity.getAddress()==null || entity.getAddress().isBlank()==true) {
-			throw new Exception("el addres es obligatorio");
-		}
-		if(entity.getEmail()==null || entity.getEmail().isBlank()==true) {
-			throw new Exception("el email es obligatorio");
-		}
-		if(entity.getEnable()==null || entity.getEnable().isBlank()==true) {
-			throw new Exception("el enable es obligatorio");
-		}
-		if(entity.getName()==null || entity.getName().isBlank()==true) {
-			throw new Exception("el name es obligatorio");
-		}
-		if(entity.getPhone()==null || entity.getPhone().isBlank()==true) {
-			throw new Exception("el phone es obligatorio");
-		}
-		if(entity.getToken()==null || entity.getToken().isBlank()==true) {
-			throw new Exception("el token es obligatorio");
+		Set<ConstraintViolation<Customer>> constraintViolation = validator.validate(entity);
+		
+		if (constraintViolation.isEmpty()==false) {
+			throw new ConstraintViolationException(constraintViolation);
 		}
 		
 	}
