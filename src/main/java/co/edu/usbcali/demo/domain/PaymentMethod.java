@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 
@@ -34,6 +35,8 @@ public class PaymentMethod implements java.io.Serializable {
 	@NotNull
 	@Size(min=1,max=255)
 	private String name;
+	
+	
 	private List<ShoppingCart> shoppingCarts = new ArrayList<ShoppingCart>(0);
 
 	public PaymentMethod() {

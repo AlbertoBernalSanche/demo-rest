@@ -13,6 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -26,14 +31,24 @@ public class ShoppingCart implements java.io.Serializable {
 	
 	private Integer carId;
 	
+	@NotNull
 	private Customer customer;
 	
+	@NotNull
 	private PaymentMethod paymentMethod;
 	
+	@NotNull
+	@Positive
 	private Integer items;
 
+	@NotNull
+	@Positive
+	@Max(99999999L)
 	private Long total;
 	
+	@NotNull
+	@NotEmpty
+	@Size(min = 1, max = 1)
 	private String enable;
 	private List<ShoppingProduct> shoppingProducts = new ArrayList<ShoppingProduct>(0);
 

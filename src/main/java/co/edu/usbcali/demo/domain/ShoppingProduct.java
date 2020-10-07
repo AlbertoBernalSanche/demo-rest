@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -19,14 +22,23 @@ import javax.persistence.Table;
 public class ShoppingProduct implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
+
+	
 	private Integer shprId;
 
+	@NotNull
 	private Product product;
 	
+	@NotNull
 	private ShoppingCart shoppingCart;
 	
+	@NotNull
+	@Positive
 	private Integer quantity;
 	
+	@NotNull
+	@Positive
+	@Max(99999999L)
 	private Long total;
 
 	public ShoppingProduct() {
