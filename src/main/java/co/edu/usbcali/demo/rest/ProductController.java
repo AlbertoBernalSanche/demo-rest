@@ -3,13 +3,17 @@ package co.edu.usbcali.demo.rest;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.usbcali.demo.domain.Product;
 import co.edu.usbcali.demo.dto.ProductDTO;
 import co.edu.usbcali.demo.mapper.ProductMapper;
-import co.edu.usbcali.demo.repository.ProductRepository;
+import co.edu.usbcali.demo.service.ProductService;
 
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
 
 	@Autowired
-	ProductRepository productRepository;
+	ProductService productService;
 	
 	@Autowired
 	ProductMapper productMapper;
@@ -32,61 +36,65 @@ public class ProductController {
 	private final static Logger log =LoggerFactory.getLogger(ProductController.class);
 	
 	@PostMapping("/save")
-	public ResponseEntity<?> save(@RequestBody ProductDTO productDTO){
-		try {
+	public ResponseEntity<?> save(@Valid @RequestBody ProductDTO productDTO) throws Exception{
+		
 			Product product = productMapper.toProduct(productDTO);
-			product=productRepository.save(product);
+			product=productService.save(product);
 			productDTO=productMapper.toProductDTO(product);
 			
 			return ResponseEntity.ok().body(productDTO);
-			
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			return ResponseEntity.badRequest().body(e.getMessage());
 		
-		}
+	}
+	@PutMapping("/update")
+	public ResponseEntity<?> update(@Valid @RequestBody ProductDTO productDTO) throws Exception{
+		
+			Product product = productMapper.toProduct(productDTO);
+			product=productService.update(product);
+			productDTO=productMapper.toProductDTO(product);
+			
+			return ResponseEntity.ok().body(productDTO);
+		
+	}
+	
+	@DeleteMapping("/delete/{proId}")
+	public ResponseEntity<?> delete(@PathVariable("proId") String proId)throws Exception {
+		
+		
+		
+			productService.deleteById(proId);
+
+			return ResponseEntity.ok().build();
+			
 	}
 	
 	@GetMapping("/findAll")
-	public ResponseEntity<?> findAll(){
+	public ResponseEntity<?> findAll()throws Exception{
 		
-		try {
-			List<Product> products=productRepository.findAll();
+			List<Product> products=productService.findAll();
 			
 			List<ProductDTO> productsDTO=productMapper.toProductsDTO(products);
 			
 			
 			return ResponseEntity.ok().body(productsDTO);
-		} catch (Exception e) {
-			log.error(e.getMessage(),e);
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		
 	}
 	
 	
 	@GetMapping("/findById/{proId}")
-	public ResponseEntity<?> findById(@PathVariable("proId") String proId) {
+	public ResponseEntity<?> findById(@PathVariable("proId") String proId)throws Exception {
 		
-		try {
-			Optional<Product> productOptional= productRepository.findById(proId);
+			Optional<Product> productOptional= productService.findById(proId);
 			
 			if(productOptional.isPresent()==false) {
 				return ResponseEntity.ok().body("Product not found");
-				
 			}
 			
 			Product product=productOptional.get();
 			
 			ProductDTO productDTO=productMapper.toProductDTO(product);
-			
-			
-			
+
 			return ResponseEntity.ok().body(productDTO);
 			
-		} catch (Exception e) {
-			
-			log.error(e.getMessage(),e);
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		
 	}
 }

@@ -9,6 +9,11 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 /**
  * @author Zathura Code Generator http://zathuracode.org/ www.zathuracode.org
@@ -19,17 +24,31 @@ import javax.persistence.Table;
 public class Product implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@NotNull
+	@Size(min = 1, max= 255)
 	private String proId;
 	
+	@NotNull
+	@Size(min = 1, max= 255)
 	private String detail;
 	
+	@NotNull
+	@Size(min = 1, max= 1)
 	private String enable;
 	
+	@NotNull
+	@Size(min = 1, max= 255)
 	private String image;
 	
+	@NotNull
+	@Size(min = 1, max= 255)
 	private String name;
 	
+	@NotNull
+	@Positive
+	@Max(99999999L)
 	private Long price;
+	
 	private List<ShoppingProduct> shoppingProducts = new ArrayList<ShoppingProduct>(0);
 
 	public Product() {

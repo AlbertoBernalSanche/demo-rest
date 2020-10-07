@@ -2,6 +2,11 @@ package co.edu.usbcali.demo.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +24,8 @@ public class ProductServiceImpl implements ProductService{
 	@Autowired
 	ProductRepository productRepository;
 	
+	@Autowired
+	Validator validator;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -78,6 +85,8 @@ public class ProductServiceImpl implements ProductService{
 		}
 		if(productRepository.existsById(id)) {
 			delete(productRepository.findById(id).get());
+		}else {
+			throw new Exception("el customer con id:"+id+" no existe existe");
 		}
 	}
 
@@ -93,23 +102,10 @@ public class ProductServiceImpl implements ProductService{
 		if(entity == null) {
 			throw new Exception("el product esta vacio");
 		}
-		if(entity.getDetail()==null || entity.getDetail().isBlank()==true) {
-			throw new Exception("el detail es obligatorio");
-		}
-		if(entity.getEnable()==null || entity.getEnable().isBlank()==true) {
-			throw new Exception("el enable es obligatorio");
-		}
-		if(entity.getImage()==null || entity.getImage().isBlank()==true) {
-			throw new Exception("el image es obligatorio");
-		}
-		if(entity.getName()==null || entity.getName().isBlank()==true) {
-			throw new Exception("el name es obligatorio");
-		}
-		if(entity.getPrice()==null || entity.getPrice()<0) {
-			throw new Exception("el detail es obligatorio");
-		}
-		if(entity.getProId()==null || entity.getProId().isBlank()==true) {
-			throw new Exception("el detail es obligatorio");
+		Set<ConstraintViolation<Product>> constraintViolation = validator.validate(entity);
+		
+		if (constraintViolation.isEmpty()==false) {
+			throw new ConstraintViolationException(constraintViolation);
 		}
 		
 	}
