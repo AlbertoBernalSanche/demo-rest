@@ -17,6 +17,9 @@ public class PaymentMethodDTO {
 	@NotNull
 	@Size(min=1,max=255)
 	private String name;
+	
+	//-------------------------------------------------------------
+	//constructores
 
 	public PaymentMethodDTO(@NotNull @Positive Integer payId, @NotNull @Size(min = 1, max = 1) String enable,
 			@NotNull @Size(min = 1, max = 255) String name) {
@@ -29,6 +32,8 @@ public class PaymentMethodDTO {
 	public PaymentMethodDTO() {
 		super();
 	}
+	//-------------------------------------------------------------
+	//gets and sets
 
 	public Integer getPayId() {
 		return payId;
