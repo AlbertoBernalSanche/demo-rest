@@ -38,9 +38,9 @@ public class ShoppingCartImpl implements ShoppingCartService{
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ShoppingCart save(ShoppingCart entity) throws Exception {
 		validate(entity);
-		if (paymentMethodRepository.existsById(entity.getPaymentMethod().getPayId())==false) {
-			throw new Exception("el payment con id:"+entity.getPaymentMethod().getPayId()+" no existe");
-		}
+		//if (paymentMethodRepository.existsById(entity.getPaymentMethod().getPayId())==false) {
+		//	throw new Exception("el payment con id:"+entity.getPaymentMethod().getPayId()+" no existe");
+		//}
 		if (customerRepository.existsById(entity.getCustomer().getEmail())==false) {
 			throw new Exception("el customer con email:"+entity.getCustomer().getEmail()+" no existe");
 		}
@@ -108,10 +108,10 @@ public class ShoppingCartImpl implements ShoppingCartService{
 		if(entity.getEnable()==null || entity.getEnable().isBlank()==true) {
 			throw new Exception("el enable es obligatorio");
 		}
-		if(entity.getItems()==null || entity.getItems()<1) {
+		if(entity.getItems()==null || entity.getItems()<0) {
 			throw new Exception("el items es obligatorio");
 		}
-		if(entity.getTotal()==null || entity.getTotal()<1) {
+		if(entity.getTotal()==null || entity.getTotal()<0) {
 			throw new Exception("el total es obligatorio");
 		}
 		

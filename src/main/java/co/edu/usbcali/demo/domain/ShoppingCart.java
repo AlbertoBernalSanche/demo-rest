@@ -34,16 +34,14 @@ public class ShoppingCart implements java.io.Serializable {
 	@NotNull
 	private Customer customer;
 	
-	@NotNull
+	
 	private PaymentMethod paymentMethod;
 	
 	@NotNull
-	@Positive
 	private Integer items;
 
 	@NotNull
-	@Positive
-	@Max(99999999L)
+	@Max(999999999999999999L)
 	private Long total;
 	
 	@NotNull

@@ -38,7 +38,7 @@ public class ShoppingProduct implements java.io.Serializable {
 	
 	@NotNull
 	@Positive
-	@Max(99999999L)
+	@Max(999999999999999999L)
 	private Long total;
 
 	public ShoppingProduct() {
