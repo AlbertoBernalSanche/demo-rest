@@ -111,22 +111,87 @@ public class CartServiceImpl implements CartService{
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void removeProduct(Integer carId, String proId) throws Exception {
-		// TODO Auto-generated method stub
+		
+		ShoppingCart shoppingCart=null;
+		Product product=null;
+		Integer shprId=null;
+		
+		if (carId==null||carId<=0) {
+			throw new Exception("el cartId es nulo");
+			
+		}
+		if (shoppingCartService.findById(carId).isPresent()==false) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		shoppingCart=shoppingCartService.findById(carId).get();
+		if (shoppingCart.getEnable().equals("N")==true) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		
+		if (proId==null||proId.isBlank()==true) {
+			throw new Exception("el proId es nulo");
+		}
+		if (productService.findById(proId).isPresent()==false) {
+			throw new Exception("el product no existe");
+		}
+		product=productService.findById(proId).get();
+		if (product.getEnable().equals("N")==true) {
+			throw new Exception("el product esta inhabilitado");
+		}
+		 
+		shprId=shoppingProductService.findByCarIdAndProId(carId, proId);
+		
+		shoppingProductService.deleteById(shprId);
+		
 		
 	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void cleanCart(Integer carId) throws Exception {
-		// TODO Auto-generated method stub
+		
+		ShoppingCart shoppingCart=null;
+		if (carId==null||carId<=0) {
+			throw new Exception("el cartId es nulo");
+			
+		}
+		if (shoppingCartService.findById(carId).isPresent()==false) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		shoppingCart=shoppingCartService.findById(carId).get();
+		if (shoppingCart.getEnable().equals("N")==true) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		
+		shoppingProductService.deleteShoppingProductsByShoppingCart(carId);
+		
+		
 		
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<ShoppingProduct> findShoppingProductByShoppingCart(Integer carId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ShoppingCart shoppingCart=null;
+		
+		//List<ShoppingProduct> listShoppingProduct=null;
+		
+		if (carId==null||carId<=0) {
+			throw new Exception("el cartId es nulo");
+			
+		}
+		if (shoppingCartService.findById(carId).isPresent()==false) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		shoppingCart=shoppingCartService.findById(carId).get();
+		if (shoppingCart.getEnable().equals("N")==true) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		
+		
+		
+		return shoppingProductService.findShoppingProductByShoppingCart(carId);
 	}
 
 }

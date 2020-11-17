@@ -2,22 +2,31 @@ package co.edu.usbcali.demo.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import co.edu.usbcali.demo.domain.ShoppingCart;
 import co.edu.usbcali.demo.domain.ShoppingProduct;
 
 @SpringBootTest
 @Rollback(false)
+@TestMethodOrder(OrderAnnotation.class)
 class cartServiceTest {
+	
+	private  final static Logger log=LoggerFactory.getLogger(cartServiceTest.class);
 	
 	@Autowired
 	CartService cartService;
 
 	@Test
+	@Order(1)
 	void debeCrearUnShoppingCart()throws Exception {
 		//arrange
 		String email="abaglowbn@furl.net";
@@ -32,11 +41,22 @@ class cartServiceTest {
 	}
 	
 	@Test
+	void noDebeCrearUnShoppingCartPorCustomerDisable()throws Exception {
+		//Arrange
+		String email="abeamondqq@harvard.edu";
+		
+		//Act
+		assertThrows(Exception.class, ()->cartService.createCart(email));
+		
+	}
+	
+	@Test
+	@Order(2)
 	void debeAgregarProductShoppingCart()throws Exception {
 		//arrange
 		Integer carId=11;
-		String proId="APPL45";
-		Integer quantity=10;
+		String proId="L380";
+		Integer quantity=2;
 		ShoppingProduct shoppingProduct=null;
 		
 		//act
@@ -44,6 +64,47 @@ class cartServiceTest {
 		
 		//assert
 		assertNotNull(shoppingProduct,"el shopping product es nulo");
+		
+	}
+	
+	@Test
+	@Order(5)
+	void debeBorrarTodosLosProductosDelCart()throws Exception {
+		Integer carId=11;
+		
+		cartService.cleanCart(carId);
+		
+		
+	}
+	
+	@Test
+	@Order(3)
+	void debeBorrarElShoppingProduct()throws Exception{
+		
+		Integer carId=11;
+		String proId="APPL45";
+		
+		cartService.removeProduct(carId, proId);
+		
+	}
+	
+	@Test
+	@Order(4)
+	void debeMostraTodosLosProductosDelCart()throws Exception{
+		Integer carId=11;
+		
+		cartService.findShoppingProductByShoppingCart(carId).forEach(shoppingProduct->{
+			
+			log.info("id de shoppig product "+shoppingProduct.getShprId().toString());
+			log.info("id del producto "+shoppingProduct.getProduct().getProId());
+			log.info("cantidad "+shoppingProduct.getQuantity().toString());
+			log.info("total "+shoppingProduct.getTotal().toString());
+			log.info("-------------------------");
+			
+		});
+		
+		
+		
 		
 	}
 	

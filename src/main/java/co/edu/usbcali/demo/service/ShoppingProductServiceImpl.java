@@ -30,7 +30,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
     private ShoppingProductRepository shoppingProductRepository;
     @Autowired
     private Validator validator;
-
+  //-------------------------------------------------------------------------
     @Override
     public void validate(ShoppingProduct shoppingProduct)
         throws ConstraintViolationException {
@@ -40,13 +40,13 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
             throw new ConstraintViolationException(constraintViolations);
         }
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = true)
     public Long count() {
         return shoppingProductRepository.count();
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = true)
     public List<ShoppingProduct> findAll() {
@@ -54,7 +54,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
 
         return shoppingProductRepository.findAll();
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public ShoppingProduct save(ShoppingProduct entity)
@@ -73,7 +73,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
 
         return shoppingProductRepository.save(entity);
     }
-
+//-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(ShoppingProduct entity) throws Exception {
@@ -94,7 +94,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
         shoppingProductRepository.deleteById(entity.getShprId());
         log.debug("delete ShoppingProduct successful");
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteById(Integer id) throws Exception {
@@ -108,7 +108,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
             delete(shoppingProductRepository.findById(id).get());
         }
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public ShoppingProduct update(ShoppingProduct entity)
@@ -127,7 +127,7 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
 
         return shoppingProductRepository.save(entity);
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = true)
     public Optional<ShoppingProduct> findById(Integer shprId)
@@ -136,11 +136,33 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
 
         return shoppingProductRepository.findById(shprId);
     }
-
+  //-------------------------------------------------------------------------
     @Override
     @Transactional(readOnly = true)
 	public Long totalShoppingProductByShoppingCart(Integer carId) {
 		
 		return shoppingProductRepository.totalShoppingProductByShoppingCart(carId);
+	}
+  //-------------------------------------------------------------------------
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void deleteShoppingProductsByShoppingCart(Integer carId) {
+		
+		shoppingProductRepository.deleteShoppingProductsByShoppingCart(carId);
+		
+	}
+	//-------------------------------------------------------------------------
+	@Override
+	@Transactional(readOnly = true)
+	public List<ShoppingProduct> findShoppingProductByShoppingCart(Integer carId) {
+	
+		return shoppingProductRepository.findShoppingProductByShoppingCart(carId);
+	}
+	
+	
+	@Override
+	public Integer findByCarIdAndProId(Integer carId, String proId) {
+		
+		return shoppingProductRepository.findByCarIdAndProId(carId, proId);
 	}
 }
