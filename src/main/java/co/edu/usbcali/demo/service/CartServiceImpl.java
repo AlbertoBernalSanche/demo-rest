@@ -63,6 +63,7 @@ public class CartServiceImpl implements CartService{
 		Product product=null;
 		Long totalShoppingProduct=0L;
 		Long totalShoppingCart=0L;
+		ShoppingProduct shoppingProduct=null;
 		if (carId==null||carId<=0) {
 			throw new Exception("el cartId es nulo");
 			
@@ -88,21 +89,33 @@ public class CartServiceImpl implements CartService{
 		if (product.getEnable().equals("N")==true) {
 			throw new Exception("el product esta inhabilitado");
 		}
+		
+		shoppingProduct=shoppingProductService.findShoppingProductByCarIdAndProId(carId, proId);
 		totalShoppingProduct=Long.valueOf(product.getPrice()*quantity);
 		
-		ShoppingProduct shoppingProduct=new ShoppingProduct();
-		shoppingProduct.setProduct(product);
-		shoppingProduct.setQuantity(quantity);
-		shoppingProduct.setShoppingCart(shoppingCart);
-		shoppingProduct.setShprId(0);
-		totalShoppingProduct=Long.valueOf(product.getPrice()*quantity);
-		shoppingProduct.setTotal(totalShoppingProduct);
-		
-		shoppingProduct=shoppingProductService.save(shoppingProduct);
-		
+		if (shoppingProduct==null) {
+			
+			shoppingProduct=new ShoppingProduct();
+			shoppingProduct.setProduct(product);
+			shoppingProduct.setQuantity(quantity);
+			shoppingProduct.setShoppingCart(shoppingCart);
+			shoppingProduct.setShprId(0);
+			totalShoppingProduct=Long.valueOf(product.getPrice()*quantity);
+			shoppingProduct.setTotal(totalShoppingProduct);
+			shoppingProduct=shoppingProductService.save(shoppingProduct);
+			
+			
+		}else {
+			shoppingProduct.setQuantity(shoppingProduct.getQuantity()+quantity);
+			shoppingProduct.setTotal(shoppingProduct.getTotal()+totalShoppingProduct);
+			shoppingProduct=shoppingProductService.update(shoppingProduct);
+			
+		}
+
 		totalShoppingCart=shoppingProductService.totalShoppingProductByShoppingCart(carId);
 		
 		shoppingCart.setTotal(totalShoppingCart);
+		shoppingCart.setItems(shoppingCart.getItems()+quantity);
 		shoppingCartService.update(shoppingCart);
 		
 		return shoppingProduct;
@@ -113,8 +126,11 @@ public class CartServiceImpl implements CartService{
 	public void removeProduct(Integer carId, String proId) throws Exception {
 		
 		ShoppingCart shoppingCart=null;
+		ShoppingProduct shoppingProduct=null;
 		Product product=null;
 		Integer shprId=null;
+		Long total=0L;
+		Integer cantidad=0;
 		
 		if (carId==null||carId<=0) {
 			throw new Exception("el cartId es nulo");
@@ -140,6 +156,18 @@ public class CartServiceImpl implements CartService{
 		}
 		 
 		shprId=shoppingProductService.findByCarIdAndProId(carId, proId);
+
+		shoppingProduct=shoppingProductService.findById(shprId).get();
+		
+		total=shoppingProduct.getTotal();
+		cantidad=shoppingProduct.getQuantity();
+		
+		shoppingCart.setTotal(shoppingCart.getTotal()-total);
+		shoppingCart.setItems(shoppingCart.getItems()-cantidad);
+		
+		
+		shoppingCartService.update(shoppingCart);
+		
 		
 		shoppingProductService.deleteById(shprId);
 		
@@ -163,6 +191,9 @@ public class CartServiceImpl implements CartService{
 			throw new Exception("el shopping cart esta inhabilitado");
 		}
 		
+		shoppingCart.setTotal(0L);
+		shoppingCart.setItems(0);
+		shoppingCartService.update(shoppingCart);
 		shoppingProductService.deleteShoppingProductsByShoppingCart(carId);
 		
 		

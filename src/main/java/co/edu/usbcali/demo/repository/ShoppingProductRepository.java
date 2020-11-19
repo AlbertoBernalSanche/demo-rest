@@ -23,6 +23,8 @@ public interface ShoppingProductRepository extends JpaRepository<ShoppingProduct
 	@Query("SELECT shpr.shprId FROM ShoppingProduct shpr WHERE shpr.shoppingCart.carId=:carId and shpr.product.proId=:proId")
 	public Integer findByCarIdAndProId(Integer carId, String proId);
 
+	@Query("SELECT shpr FROM ShoppingProduct shpr WHERE shpr.shoppingCart.carId=:carId and shpr.product.proId=:proId")
+	public ShoppingProduct findShoppingProductByCarIdAndProId(Integer carId, String proId);
 
 
 }

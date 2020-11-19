@@ -39,6 +39,10 @@ public class CustomerDTO {
 	@Size( max = 255)
 	private String token;
 	
+	@NotNull
+	@NotEmpty
+	@Size(min = 1, max = 1)
+	private String tipo;
 	
 
 
@@ -47,7 +51,7 @@ public class CustomerDTO {
 	}
 
 
-	public CustomerDTO(String email, String address, String enable, String name, String phone, String token) {
+	public CustomerDTO(String email, String address, String enable, String name, String phone, String token, String tipo) {
 		super();
 		this.email = email;
 		this.address = address;
@@ -55,6 +59,7 @@ public class CustomerDTO {
 		this.name = name;
 		this.phone = phone;
 		this.token = token;
+		this.tipo=tipo;
 	}
 	
 
@@ -116,6 +121,16 @@ public class CustomerDTO {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+
+	public String getTipo() {
+		return tipo;
+	}
+
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 	

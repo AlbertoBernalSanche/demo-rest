@@ -165,4 +165,9 @@ public class ShoppingProductServiceImpl implements ShoppingProductService {
 		
 		return shoppingProductRepository.findByCarIdAndProId(carId, proId);
 	}
+	@Override
+	public ShoppingProduct findShoppingProductByCarIdAndProId(Integer carId, String proId) {
+		
+		return shoppingProductRepository.findShoppingProductByCarIdAndProId(carId, proId);
+	}
 }

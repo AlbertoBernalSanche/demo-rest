@@ -17,7 +17,6 @@ import co.edu.usbcali.demo.domain.ShoppingProduct;
 
 @SpringBootTest
 @Rollback(false)
-@TestMethodOrder(OrderAnnotation.class)
 class cartServiceTest {
 	
 	private  final static Logger log=LoggerFactory.getLogger(cartServiceTest.class);
@@ -26,7 +25,6 @@ class cartServiceTest {
 	CartService cartService;
 
 	@Test
-	@Order(1)
 	void debeCrearUnShoppingCart()throws Exception {
 		//arrange
 		String email="abaglowbn@furl.net";
@@ -51,12 +49,11 @@ class cartServiceTest {
 	}
 	
 	@Test
-	@Order(2)
 	void debeAgregarProductShoppingCart()throws Exception {
 		//arrange
 		Integer carId=11;
 		String proId="L380";
-		Integer quantity=2;
+		Integer quantity=10;
 		ShoppingProduct shoppingProduct=null;
 		
 		//act
@@ -68,7 +65,6 @@ class cartServiceTest {
 	}
 	
 	@Test
-	@Order(5)
 	void debeBorrarTodosLosProductosDelCart()throws Exception {
 		Integer carId=11;
 		
@@ -78,7 +74,6 @@ class cartServiceTest {
 	}
 	
 	@Test
-	@Order(3)
 	void debeBorrarElShoppingProduct()throws Exception{
 		
 		Integer carId=11;
@@ -89,7 +84,6 @@ class cartServiceTest {
 	}
 	
 	@Test
-	@Order(4)
 	void debeMostraTodosLosProductosDelCart()throws Exception{
 		Integer carId=11;
 		
