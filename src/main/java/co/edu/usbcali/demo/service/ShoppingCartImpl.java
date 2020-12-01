@@ -38,9 +38,7 @@ public class ShoppingCartImpl implements ShoppingCartService{
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ShoppingCart save(ShoppingCart entity) throws Exception {
 		validate(entity);
-		//if (paymentMethodRepository.existsById(entity.getPaymentMethod().getPayId())==false) {
-		//	throw new Exception("el payment con id:"+entity.getPaymentMethod().getPayId()+" no existe");
-		//}
+		
 		if (customerRepository.existsById(entity.getCustomer().getEmail())==false) {
 			throw new Exception("el customer con email:"+entity.getCustomer().getEmail()+" no existe");
 		}
@@ -51,12 +49,21 @@ public class ShoppingCartImpl implements ShoppingCartService{
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public ShoppingCart update(ShoppingCart entity) throws Exception {
-		validate(entity);
-		if (shoppingCartRepository.existsById(entity.getCarId())==false) {
-			throw new Exception("el shoppingCart con id:"+entity.getCarId()+" no existe");
+
+		//log.debug("updating ShoppingCart instance");
+
+		if (entity == null) {
+			throw new Exception("ShoppingCart nulo");
 		}
-		
+
+		validate(entity);
+
+		if (shoppingCartRepository.existsById(entity.getCarId()) == false) {
+			throw new Exception("No existe un ShoppingCart con Id:"+entity.getCarId());
+		}
+
 		return shoppingCartRepository.save(entity);
+
 	}
 
 	@Override

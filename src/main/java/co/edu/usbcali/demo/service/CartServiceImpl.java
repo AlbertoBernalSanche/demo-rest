@@ -13,6 +13,7 @@ import co.edu.usbcali.demo.domain.Customer;
 import co.edu.usbcali.demo.domain.Product;
 import co.edu.usbcali.demo.domain.ShoppingCart;
 import co.edu.usbcali.demo.domain.ShoppingProduct;
+import co.edu.usbcali.demo.repository.ShoppingCartRepository;
 
 
 @Service
@@ -27,6 +28,12 @@ public class CartServiceImpl implements CartService{
 	ProductService productService;
 	@Autowired
 	ShoppingProductService shoppingProductService;
+	
+	@Autowired
+	ShoppingCartRepository shoppingCartRepository;
+	
+	@Autowired
+	PaymentMethodService paymentMethodService;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -224,5 +231,49 @@ public class CartServiceImpl implements CartService{
 		
 		return shoppingProductService.findShoppingProductByShoppingCart(carId);
 	}
+
+
+	@Override
+	@Transactional(readOnly = true)
+	public ShoppingCart findShoppingCartAvailable(String email) throws Exception {
+		Customer customer =null;
+		ShoppingCart shoppingCart=null;
+		
+		if (email==null || email.isBlank()==true) {
+			throw new Exception("el email del cliente es nulo");
+		}
+		
+		Optional<Customer> customerOptional=customerService.findById(email);
+		if (customerOptional.isPresent()==false) {
+			throw new Exception("no existe un customer con el email:"+email);
+		}
+		
+		shoppingCart=shoppingCartRepository.findShoppingCartAvailable(email);
+		
+		return shoppingCart;
+	}
+
+
+	/*@Override
+	public ShoppingCart addPaymentMethod(Integer carId, Integer payId) throws Exception {
+		ShoppingCart shoppingCart=null;
+		
+		if (carId==null||carId<=0) {
+			throw new Exception("el cartId es nulo");
+			
+		}
+		if (shoppingCartService.findById(carId).isPresent()==false) {
+			throw new Exception("el shopping cart esta inhabilitado");
+		}
+		if (payId==null||payId<=0) {
+			throw new Exception("el payId es nulo");
+			
+		}
+		if (paymentMethodService.findById(payId).isPresent()==false) {
+			throw new Exception("el payId esta inhabilitado");
+		}
+		shoppingCart=shoppingCartRepository.addPaymentMethod(carId, payId);
+		return shoppingCart;
+	}*/
 
 }

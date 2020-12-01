@@ -45,25 +45,22 @@ public class ShoppingCartController {
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@Valid @RequestBody ShoppingCartDTO shoppingCartDTO) throws Exception{
 		
-			ShoppingCart shoppingCart = shoppingCartMapper.toShoppingCart(shoppingCartDTO);
-			shoppingCart=shoppingCartService.save(shoppingCart);
-			shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
-			
-			return ResponseEntity.ok().body(shoppingCartDTO);
+		ShoppingCart shoppingCart = shoppingCartMapper.shoppingCartDTOToShoppingCart(shoppingCartDTO);
+		shoppingCart = shoppingCartService.save(shoppingCart);
+
+		return ResponseEntity.ok().body(shoppingCartMapper.shoppingCartToShoppingCartDTO(shoppingCart));
 	}
 	
 	//------------------------------------------------------------
 	
 	
 	@PutMapping("/update")
-	public ResponseEntity<?> update(@Valid @RequestBody ShoppingCartDTO shoppingCartDTO) throws Exception{
-		
-		ShoppingCart shoppingCart = shoppingCartMapper.toShoppingCart(shoppingCartDTO);
-		shoppingCart=shoppingCartService.update(shoppingCart);
-		shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
-		
-		return ResponseEntity.ok().body(shoppingCartDTO);
-		
+	public ResponseEntity<?> update(@Valid @RequestBody ShoppingCartDTO shoppingCartDTO) throws Exception {
+
+		ShoppingCart shoppingCart = shoppingCartMapper.shoppingCartDTOToShoppingCart(shoppingCartDTO);
+		shoppingCart = shoppingCartService.update(shoppingCart);
+
+		return ResponseEntity.ok().body(shoppingCartMapper.shoppingCartToShoppingCartDTO(shoppingCart));
 	}
 	
 	//------------------------------------------------------------
@@ -86,13 +83,8 @@ public class ShoppingCartController {
 	@GetMapping("/findAll")
 	public ResponseEntity<?> findAll()throws Exception{
 		
-			List<ShoppingCart> shoppingCarts=shoppingCartService.findAll();
-			
-			List<ShoppingCartDTO> shoppingCartsDTO=shoppingCartMapper.toShoppingCartsDTO(shoppingCarts);
-			
-			
-			return ResponseEntity.ok().body(shoppingCartsDTO);
-		
+		return ResponseEntity.ok()
+				.body(shoppingCartMapper.listShoppingCartToListShoppingCartDTO(shoppingCartService.findAll()));
 	}
 	
 	//------------------------------------------------------------
@@ -101,17 +93,11 @@ public class ShoppingCartController {
 	@GetMapping("/findById/{carId}")
 	public ResponseEntity<?> findById(@PathVariable("carId") Integer carId)throws Exception {
 		
-			Optional<ShoppingCart> ShoppingCartOptional= shoppingCartService.findById(carId);
-			
-			if(ShoppingCartOptional.isPresent()==false) {
-				return ResponseEntity.ok().body("ShoppingCart not found");
-			}
-			
-			ShoppingCart shoppingCart=ShoppingCartOptional.get();
-			
-			ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
+		ShoppingCart shoppingCart = (shoppingCartService.findById(carId).isPresent() == true)
+				? shoppingCartService.findById(carId).get()
+				: null;
 
-			return ResponseEntity.ok().body(shoppingCartDTO);
+		return ResponseEntity.ok().body(shoppingCartMapper.shoppingCartToShoppingCartDTO(shoppingCart));
 			
 		
 	}

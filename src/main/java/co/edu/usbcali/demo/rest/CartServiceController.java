@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.demo.domain.ShoppingCart;
 import co.edu.usbcali.demo.domain.ShoppingProduct;
+import co.edu.usbcali.demo.dto.AddPaymentMethodDTO;
 import co.edu.usbcali.demo.dto.AddProductDTO;
 import co.edu.usbcali.demo.dto.CleanCartDTO;
 import co.edu.usbcali.demo.dto.CreateCartDTO;
@@ -43,7 +44,7 @@ public class CartServiceController {
 	@PostMapping("/createCart")
 	public ResponseEntity<?> createCart(@RequestBody @Valid CreateCartDTO createCartDTO) throws Exception{
 		ShoppingCart shoppingCart=cartService.createCart(createCartDTO.getEmail());
-		ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
+		ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.shoppingCartToShoppingCartDTO(shoppingCart);
 		return ResponseEntity.ok().body(shoppingCartDTO);
 	}
 	
@@ -72,4 +73,22 @@ public class CartServiceController {
 		List<ShoppingProductDTO> shoppingProductsDtos=shoppingProductMapper.listShoppingProductToListShoppingProductDTO(shoppingProducts);
 		return ResponseEntity.ok().body(shoppingProductsDtos);
 	}
+	
+	@GetMapping("/findShoppingCartAvailable/{email}")
+	public ResponseEntity<?> findShoppingCartAvailable(@PathVariable("email") String email) throws Exception {
+		
+		ShoppingCart shoppingCart=cartService.findShoppingCartAvailable(email);
+		ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.shoppingCartToShoppingCartDTO(shoppingCart);
+		
+		return ResponseEntity.ok().body(shoppingCartDTO);
+	}
+	
+	/*@PostMapping("/addPaymentMethod")
+	public ResponseEntity<?> addPaymentMethod(@RequestBody @Valid AddPaymentMethodDTO addPaymentMethodDTO) throws Exception {
+		ShoppingCart shoppingCart=cartService.addPaymentMethod(addPaymentMethodDTO.getCarId(), addPaymentMethodDTO.getPayId());
+		ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
+		return ResponseEntity.ok().body(shoppingCartDTO);
+	}*/
+	
+	
 }

@@ -13,8 +13,6 @@ public class ShoppingCartDTO {
 
 	private Integer carId;
 
-	
-
 	@NotNull
 	@Positive
 	private Integer items;
@@ -28,6 +26,12 @@ public class ShoppingCartDTO {
 	@NotEmpty
 	@Size(min = 1, max = 1)
 	private String enable;
+	
+	@NotNull
+	private String email;
+	
+	
+	private Integer payId;
 
 	// -------------------------------------------------------------
 	// constructores
@@ -35,16 +39,21 @@ public class ShoppingCartDTO {
 		super();
 	}
 
+
 	
 
 	public ShoppingCartDTO(Integer carId, @NotNull @Positive Integer items,
-			@NotNull @Positive @Max(99999999) Long total, @NotNull @NotEmpty @Size(min = 1, max = 1) String enable) {
+			@NotNull @Positive @Max(99999999) Long total, @NotNull @NotEmpty @Size(min = 1, max = 1) String enable,
+			@NotNull String email, Integer payId) {
 		super();
 		this.carId = carId;
 		this.items = items;
 		this.total = total;
 		this.enable = enable;
+		this.email = email;
+		this.payId = payId;
 	}
+
 
 
 
@@ -83,5 +92,36 @@ public class ShoppingCartDTO {
 	public void setEnable(String enable) {
 		this.enable = enable;
 	}
+
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+
+
+	public Integer getPayId() {
+		return payId;
+	}
+
+
+
+
+	public void setPayId(Integer payId) {
+		this.payId = payId;
+	}
+
+
+	
 
 }
