@@ -99,4 +99,16 @@ public class ProductController {
 			
 		
 	}
+	
+	@GetMapping("/findProductAvalaible")
+	public ResponseEntity<?> findProductAvalaible()throws Exception{
+		
+			List<Product> products=productService.findProductAvalaible();
+			
+			List<ProductDTO> productsDTO=productMapper.toProductsDTO(products);
+			
+			
+			return ResponseEntity.ok().body(productsDTO);
+		
+	}
 }

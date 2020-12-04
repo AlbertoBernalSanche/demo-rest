@@ -131,4 +131,16 @@ public class ShoppingCartImpl implements ShoppingCartService{
 		return shoppingCartRepository.count();
 	}
 
+	@Override
+	public List<ShoppingCart> findShoppingCartByEmail(String email) throws Exception {
+		
+		if (email.isBlank() || email.isEmpty()) {
+			throw new Exception("el email es nulo");
+		}
+		if (customerRepository.findById(email)==null) {
+			throw new Exception("el email es nulo");
+		}
+		return shoppingCartRepository.findShoppingCartByEmail(email);
+	}
+
 }

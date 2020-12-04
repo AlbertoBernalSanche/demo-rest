@@ -106,4 +106,10 @@ public class PaymentMethodImpl implements PaymentMethodService {
 		return paymentMethodRepository.count();
 	}
 
+	@Override
+	public List<PaymentMethod> findPaymentMethodAvalaible() {
+		
+		return paymentMethodRepository.findPaymentMethodAvalaible();
+	}
+
 }

@@ -117,4 +117,10 @@ public class ProductServiceImpl implements ProductService{
 		return productRepository.count();
 	}
 
+	@Override
+	public List<Product> findProductAvalaible() {
+		
+		return productRepository.findProductAvalaible();
+	}
+
 }

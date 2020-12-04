@@ -1,6 +1,9 @@
 package co.edu.usbcali.demo.security;
 
 import static co.edu.usbcali.demo.security.Constants.LOGIN_URL;
+import static co.edu.usbcali.demo.security.Constants.REGISTER_URL;
+import static co.edu.usbcali.demo.security.Constants.UPDATE_URL;
+
 
 import java.util.Arrays;
 
@@ -55,7 +58,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.csrf()
 				.disable()
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, LOGIN_URL)
+				.antMatchers( LOGIN_URL, REGISTER_URL,UPDATE_URL)
 				.permitAll()
 				.anyRequest()
 				.authenticated()

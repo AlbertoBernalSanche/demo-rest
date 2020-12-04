@@ -87,6 +87,15 @@ public class ShoppingCartController {
 				.body(shoppingCartMapper.listShoppingCartToListShoppingCartDTO(shoppingCartService.findAll()));
 	}
 	
+	//----------------------------------------------------------------
+	
+	@GetMapping("/findShoppingCartByEmail/{email}")
+	public ResponseEntity<?> findShoppingCartByEmail(@PathVariable("email") String email)throws Exception{
+		
+		return ResponseEntity.ok()
+				.body(shoppingCartMapper.listShoppingCartToListShoppingCartDTO(shoppingCartService.findShoppingCartByEmail(email)));
+	}
+	
 	//------------------------------------------------------------
 	
 	

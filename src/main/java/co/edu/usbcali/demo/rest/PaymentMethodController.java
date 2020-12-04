@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.demo.domain.PaymentMethod;
+import co.edu.usbcali.demo.domain.Product;
 import co.edu.usbcali.demo.dto.PaymentMethodDTO;
+import co.edu.usbcali.demo.dto.ProductDTO;
 import co.edu.usbcali.demo.mapper.PaymentMethodMapper;
 import co.edu.usbcali.demo.service.PaymentMethodService;
 
@@ -97,6 +99,18 @@ public class PaymentMethodController {
 
 			return ResponseEntity.ok().body(paymentMethodDTO);
 			
+		
+	}
+	
+	@GetMapping("/findPaymentMethodAvalaible")
+	public ResponseEntity<?> findPaymentMethodAvalaible()throws Exception{
+		
+			List<PaymentMethod> payments=paymentMethodService.findPaymentMethodAvalaible();
+			
+			List<PaymentMethodDTO> paymentsDTO=paymentMethodMapper.toPaymentMethodsDTO(payments);
+			
+			
+			return ResponseEntity.ok().body(paymentsDTO);
 		
 	}
 }
