@@ -83,12 +83,7 @@ public class CartServiceController {
 		return ResponseEntity.ok().body(shoppingCartDTO);
 	}
 	
-	/*@PostMapping("/addPaymentMethod")
-	public ResponseEntity<?> addPaymentMethod(@RequestBody @Valid AddPaymentMethodDTO addPaymentMethodDTO) throws Exception {
-		ShoppingCart shoppingCart=cartService.addPaymentMethod(addPaymentMethodDTO.getCarId(), addPaymentMethodDTO.getPayId());
-		ShoppingCartDTO shoppingCartDTO=shoppingCartMapper.toShoppingCartDTO(shoppingCart);
-		return ResponseEntity.ok().body(shoppingCartDTO);
-	}*/
+	
 	
 	
 }

@@ -168,7 +168,7 @@ class ProductRepositoryTest {
 
 	}
 
-	@Test
+	/*@Test
 	@Transactional
 	@Order(10)
 	void findByNameContainsIgnoreCase() {
@@ -182,7 +182,7 @@ class ProductRepositoryTest {
 			log.info("price:" + product.getPrice());
 		});
 
-	}
+	}*/
 	
 	@Test
 	@Transactional

@@ -123,4 +123,18 @@ public class ProductServiceImpl implements ProductService{
 		return productRepository.findProductAvalaible();
 	}
 
+	@Override
+	public List<Product> findProductByWordAndPrice(String word, Long max, Long min) {
+		
+		return productRepository.findProductByWordAndPrice(word, max, min);
+	}
+
+	@Override
+	public List<Product> findByNameContainsIgnoreCase(String word) {
+		
+		return productRepository.findByNameContainsIgnoreCaseAndEnable(word);
+	}
+
+	
+
 }

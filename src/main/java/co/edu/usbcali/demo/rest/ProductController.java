@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.demo.domain.Product;
+import co.edu.usbcali.demo.domain.ShoppingCart;
 import co.edu.usbcali.demo.dto.ProductDTO;
+import co.edu.usbcali.demo.dto.ShoppingCartDTO;
 import co.edu.usbcali.demo.mapper.ProductMapper;
 import co.edu.usbcali.demo.service.ProductService;
 
@@ -109,6 +111,32 @@ public class ProductController {
 			
 			
 			return ResponseEntity.ok().body(productsDTO);
+		
+	}
+	
+	@GetMapping("/findProductByWordAndPrice/{word}/{max}/{min}")
+	public ResponseEntity<?> findProductByWordAndPrice(@PathVariable("word") String word, @PathVariable("max")Long max,@PathVariable("min") Long min) throws Exception {
+		
+		
+		List<Product> products=productService.findProductByWordAndPrice(word, max, min);
+		
+		List<ProductDTO> productsDTO=productMapper.toProductsDTO(products);
+		
+		
+		return ResponseEntity.ok().body(productsDTO);
+		
+	}
+	
+	@GetMapping("/findByNameContainsIgnoreCase/{word}")
+	public ResponseEntity<?> findByNameContainsIgnoreCase(@PathVariable("word") String word) throws Exception {
+		
+		
+		List<Product> products=productService.findByNameContainsIgnoreCase(word);
+		
+		List<ProductDTO> productsDTO=productMapper.toProductsDTO(products);
+		
+		
+		return ResponseEntity.ok().body(productsDTO);
 		
 	}
 }
