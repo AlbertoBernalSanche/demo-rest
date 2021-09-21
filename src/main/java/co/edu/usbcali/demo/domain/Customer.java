@@ -59,7 +59,7 @@ public class Customer implements java.io.Serializable {
 	private String tipo;
 	
 	
-	private List<ShoppingCart> shoppingCarts = new ArrayList<ShoppingCart>(0);
+	private List<ShoppingCart> shoppingCarts = new ArrayList<ShoppingCart>();
 
 	public Customer() {
 	}

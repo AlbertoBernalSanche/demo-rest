@@ -21,7 +21,7 @@ public class PaymentMethodDTO {
 	//-------------------------------------------------------------
 	//constructores
 
-	public PaymentMethodDTO(@NotNull @Positive Integer payId, @NotNull @Size(min = 1, max = 1) String enable,
+	public PaymentMethodDTO( @Positive Integer payId, @NotNull @Size(min = 1, max = 1) String enable,
 			@NotNull @Size(min = 1, max = 255) String name) {
 		super();
 		this.payId = payId;
